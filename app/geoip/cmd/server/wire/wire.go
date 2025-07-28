@@ -4,16 +4,17 @@
 package wire
 
 import (
-	"simplex/app/geoip/internal/handler"
+	"simplex/app/geoip/internal/hdl"
 	"simplex/app/geoip/internal/job"
-	"simplex/app/geoip/internal/repository"
-	"simplex/app/geoip/internal/server"
-	"simplex/app/geoip/internal/service"
+	"simplex/app/geoip/internal/repo"
+	"simplex/app/geoip/internal/srv"
+	"simplex/app/geoip/internal/svc"
 	"simplex/pkg/app"
 	"simplex/pkg/jwt"
 	"simplex/pkg/log"
 	"simplex/pkg/server/http"
 	"simplex/pkg/sid"
+	"simplex/repository"
 
 	"github.com/google/wire"
 	"github.com/spf13/viper"
@@ -25,17 +26,17 @@ var repositorySet = wire.NewSet(
 	//repository.NewMongo,
 	repository.NewRepository,
 	repository.NewTransaction,
-	repository.NewUserRepository,
+	repo.NewUserRepository,
 )
 
 var serviceSet = wire.NewSet(
-	service.NewService,
-	service.NewUserService,
+	svc.NewService,
+	svc.NewUserService,
 )
 
 var handlerSet = wire.NewSet(
-	handler.NewHandler,
-	handler.NewUserHandler,
+	hdl.NewHandler,
+	hdl.NewUserHandler,
 )
 
 var jobSet = wire.NewSet(
@@ -43,14 +44,14 @@ var jobSet = wire.NewSet(
 	job.NewUserJob,
 )
 var serverSet = wire.NewSet(
-	server.NewHTTPServer,
-	server.NewJobServer,
+	srv.NewHTTPServer,
+	srv.NewJobServer,
 )
 
 // build App
 func newApp(
 	httpServer *http.Server,
-	jobServer *server.JobServer,
+	jobServer *srv.JobServer,
 	// task *server.Task,
 ) *app.App {
 	return app.NewApp(

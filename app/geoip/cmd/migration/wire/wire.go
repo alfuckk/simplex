@@ -4,10 +4,11 @@
 package wire
 
 import (
-	"simplex/app/geoip/internal/repository"
-	"simplex/app/geoip/internal/server"
+	"simplex/app/geoip/internal/repo"
+	"simplex/app/geoip/internal/srv"
 	"simplex/pkg/app"
 	"simplex/pkg/log"
+	"simplex/repository"
 
 	"github.com/google/wire"
 	"github.com/spf13/viper"
@@ -17,15 +18,15 @@ var repositorySet = wire.NewSet(
 	repository.NewDB,
 	//repository.NewRedis,
 	repository.NewRepository,
-	repository.NewUserRepository,
+	repo.NewUserRepository,
 )
 var serverSet = wire.NewSet(
-	server.NewMigrateServer,
+	srv.NewMigrateServer,
 )
 
 // build App
 func newApp(
-	migrateServer *server.MigrateServer,
+	migrateServer *srv.MigrateServer,
 ) *app.App {
 	return app.NewApp(
 		app.WithServer(migrateServer),

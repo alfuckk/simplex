@@ -2,7 +2,7 @@ package task
 
 import (
 	"context"
-	"simplex/app/geoip/internal/repository"
+	"simplex/app/geoip/internal/repo"
 )
 
 type UserTask interface {
@@ -11,7 +11,7 @@ type UserTask interface {
 
 func NewUserTask(
 	task *Task,
-	userRepo repository.UserRepository,
+	userRepo repo.UserRepository,
 ) UserTask {
 	return &userTask{
 		userRepo: userRepo,
@@ -20,7 +20,7 @@ func NewUserTask(
 }
 
 type userTask struct {
-	userRepo repository.UserRepository
+	userRepo repo.UserRepository
 	*Task
 }
 

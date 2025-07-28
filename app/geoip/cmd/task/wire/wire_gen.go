@@ -7,15 +7,15 @@
 package wire
 
 import (
-	"simplex/app/geoip/internal/repository"
-	"simplex/app/geoip/internal/server"
+	"github.com/google/wire"
+	"github.com/spf13/viper"
+	"simplex/app/geoip/internal/repo"
+	"simplex/app/geoip/internal/srv"
 	"simplex/app/geoip/internal/task"
 	"simplex/pkg/app"
 	"simplex/pkg/log"
 	"simplex/pkg/sid"
-
-	"github.com/google/wire"
-	"github.com/spf13/viper"
+	"simplex/repository"
 )
 
 // Injectors from wire.go:
@@ -26,9 +26,9 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	transaction := repository.NewTransaction(repositoryRepository)
 	sidSid := sid.NewSid()
 	taskTask := task.NewTask(transaction, logger, sidSid)
-	userRepository := repository.NewUserRepository(repositoryRepository)
+	userRepository := repo.NewUserRepository(repositoryRepository)
 	userTask := task.NewUserTask(taskTask, userRepository)
-	taskServer := server.NewTaskServer(logger, userTask)
+	taskServer := srv.NewTaskServer(logger, userTask)
 	appApp := newApp(taskServer)
 	return appApp, func() {
 	}, nil
@@ -36,14 +36,14 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repository.NewTransaction, repo.NewUserRepository)
 
 var taskSet = wire.NewSet(task.NewTask, task.NewUserTask)
 
-var serverSet = wire.NewSet(server.NewTaskServer)
+var serverSet = wire.NewSet(srv.NewTaskServer)
 
 // build App
-func newApp(task2 *server.TaskServer,
+func newApp(task2 *srv.TaskServer,
 ) *app.App {
 	return app.NewApp(app.WithServer(task2), app.WithName("demo-task"))
 }

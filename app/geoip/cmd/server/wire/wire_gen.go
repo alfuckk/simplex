@@ -7,59 +7,59 @@
 package wire
 
 import (
-	"simplex/app/geoip/internal/handler"
+	"github.com/google/wire"
+	"github.com/spf13/viper"
+	"simplex/app/geoip/internal/hdl"
 	"simplex/app/geoip/internal/job"
-	"simplex/app/geoip/internal/repository"
-	"simplex/app/geoip/internal/server"
-	"simplex/app/geoip/internal/service"
+	"simplex/app/geoip/internal/repo"
+	"simplex/app/geoip/internal/srv"
+	"simplex/app/geoip/internal/svc"
 	"simplex/pkg/app"
 	"simplex/pkg/jwt"
 	"simplex/pkg/log"
 	"simplex/pkg/server/http"
 	"simplex/pkg/sid"
-
-	"github.com/google/wire"
-	"github.com/spf13/viper"
+	"simplex/repository"
 )
 
 // Injectors from wire.go:
 
 func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), error) {
 	jwtJWT := jwt.NewJwt(viperViper)
-	handlerHandler := handler.NewHandler(logger)
+	handler := hdl.NewHandler(logger)
 	db := repository.NewDB(viperViper, logger)
 	repositoryRepository := repository.NewRepository(logger, db)
 	transaction := repository.NewTransaction(repositoryRepository)
 	sidSid := sid.NewSid()
-	serviceService := service.NewService(transaction, logger, sidSid, jwtJWT)
-	userRepository := repository.NewUserRepository(repositoryRepository)
-	userService := service.NewUserService(serviceService, userRepository)
-	userHandler := handler.NewUserHandler(handlerHandler, userService)
-	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler)
+	service := svc.NewService(transaction, logger, sidSid, jwtJWT)
+	userRepository := repo.NewUserRepository(repositoryRepository)
+	userService := svc.NewUserService(service, userRepository)
+	userHandler := hdl.NewUserHandler(handler, userService)
+	server := srv.NewHTTPServer(logger, viperViper, jwtJWT, userHandler)
 	jobJob := job.NewJob(transaction, logger, sidSid)
 	userJob := job.NewUserJob(jobJob, userRepository)
-	jobServer := server.NewJobServer(logger, userJob)
-	appApp := newApp(httpServer, jobServer)
+	jobServer := srv.NewJobServer(logger, userJob)
+	appApp := newApp(server, jobServer)
 	return appApp, func() {
 	}, nil
 }
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repository.NewTransaction, repo.NewUserRepository)
 
-var serviceSet = wire.NewSet(service.NewService, service.NewUserService)
+var serviceSet = wire.NewSet(svc.NewService, svc.NewUserService)
 
-var handlerSet = wire.NewSet(handler.NewHandler, handler.NewUserHandler)
+var handlerSet = wire.NewSet(hdl.NewHandler, hdl.NewUserHandler)
 
 var jobSet = wire.NewSet(job.NewJob, job.NewUserJob)
 
-var serverSet = wire.NewSet(server.NewHTTPServer, server.NewJobServer)
+var serverSet = wire.NewSet(srv.NewHTTPServer, srv.NewJobServer)
 
 // build App
 func newApp(
 	httpServer *http.Server,
-	jobServer *server.JobServer,
+	jobServer *srv.JobServer,
 
 ) *app.App {
 	return app.NewApp(app.WithServer(httpServer, jobServer), app.WithName("demo-server"))

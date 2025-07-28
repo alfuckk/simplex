@@ -1,4 +1,4 @@
-package job
+package svc
 
 import (
 	"simplex/pkg/jwt"
@@ -7,21 +7,23 @@ import (
 	"simplex/repository"
 )
 
-type Job struct {
+type Service struct {
 	logger *log.Logger
 	sid    *sid.Sid
 	jwt    *jwt.JWT
 	tm     repository.Transaction
 }
 
-func NewJob(
+func NewService(
 	tm repository.Transaction,
 	logger *log.Logger,
 	sid *sid.Sid,
-) *Job {
-	return &Job{
+	jwt *jwt.JWT,
+) *Service {
+	return &Service{
 		logger: logger,
 		sid:    sid,
+		jwt:    jwt,
 		tm:     tm,
 	}
 }

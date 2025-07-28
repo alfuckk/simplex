@@ -1,10 +1,10 @@
 package task
 
 import (
-	"simplex/app/geoip/internal/repository"
 	"simplex/pkg/jwt"
 	"simplex/pkg/log"
 	"simplex/pkg/sid"
+	"simplex/repository"
 )
 
 type Task struct {

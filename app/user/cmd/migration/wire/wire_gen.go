@@ -9,17 +9,18 @@ package wire
 import (
 	"github.com/google/wire"
 	"github.com/spf13/viper"
-	"simplex/app/user/internal/repository"
-	"simplex/app/user/internal/server"
+	"simplex/app/user/internal/repo"
+	"simplex/app/user/internal/srv"
 	"simplex/pkg/app"
 	"simplex/pkg/log"
+	"simplex/repository"
 )
 
 // Injectors from wire.go:
 
 func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), error) {
 	db := repository.NewDB(viperViper, logger)
-	migrateServer := server.NewMigrateServer(db, logger)
+	migrateServer := srv.NewMigrateServer(db, logger)
 	appApp := newApp(migrateServer)
 	return appApp, func() {
 	}, nil
@@ -27,13 +28,13 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repository.NewUserRepository)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repo.NewUserRepository)
 
-var serverSet = wire.NewSet(server.NewMigrateServer)
+var serverSet = wire.NewSet(srv.NewMigrateServer)
 
 // build App
 func newApp(
-	migrateServer *server.MigrateServer,
+	migrateServer *srv.MigrateServer,
 ) *app.App {
 	return app.NewApp(app.WithServer(migrateServer), app.WithName("demo-migrate"))
 }

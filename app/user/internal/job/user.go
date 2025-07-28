@@ -2,7 +2,7 @@ package job
 
 import (
 	"context"
-	"simplex/app/user/internal/repository"
+	"simplex/app/user/internal/repo"
 	"time"
 )
 
@@ -12,7 +12,7 @@ type UserJob interface {
 
 func NewUserJob(
 	job *Job,
-	userRepo repository.UserRepository,
+	userRepo repo.UserRepository,
 ) UserJob {
 	return &userJob{
 		userRepo: userRepo,
@@ -21,7 +21,7 @@ func NewUserJob(
 }
 
 type userJob struct {
-	userRepo repository.UserRepository
+	userRepo repo.UserRepository
 	*Job
 }
 

@@ -1,10 +1,10 @@
 package job
 
 import (
-	"simplex/app/user/internal/repository"
 	"simplex/pkg/jwt"
 	"simplex/pkg/log"
 	"simplex/pkg/sid"
+	"simplex/repository"
 )
 
 type Job struct {

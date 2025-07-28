@@ -4,12 +4,13 @@
 package wire
 
 import (
-	"simplex/app/geoip/internal/repository"
-	"simplex/app/geoip/internal/server"
+	"simplex/app/geoip/internal/repo"
+	"simplex/app/geoip/internal/srv"
 	"simplex/app/geoip/internal/task"
 	"simplex/pkg/app"
 	"simplex/pkg/log"
 	"simplex/pkg/sid"
+	"simplex/repository"
 
 	"github.com/google/wire"
 	"github.com/spf13/viper"
@@ -20,7 +21,7 @@ var repositorySet = wire.NewSet(
 	//repository.NewRedis,
 	repository.NewRepository,
 	repository.NewTransaction,
-	repository.NewUserRepository,
+	repo.NewUserRepository,
 )
 
 var taskSet = wire.NewSet(
@@ -28,12 +29,12 @@ var taskSet = wire.NewSet(
 	task.NewUserTask,
 )
 var serverSet = wire.NewSet(
-	server.NewTaskServer,
+	srv.NewTaskServer,
 )
 
 // build App
 func newApp(
-	task *server.TaskServer,
+	task *srv.TaskServer,
 ) *app.App {
 	return app.NewApp(
 		app.WithServer(task),
