@@ -30,7 +30,7 @@ func newApp(
 ) *app.App {
 	return app.NewApp(
 		app.WithServer(migrateServer),
-		app.WithName("demo-migrate"),
+		app.WithName("geoip-migrate"),
 	)
 }
 

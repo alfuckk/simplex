@@ -38,7 +38,7 @@ func newApp(
 ) *app.App {
 	return app.NewApp(
 		app.WithServer(task),
-		app.WithName("demo-task"),
+		app.WithName("user-task"),
 	)
 }
 
