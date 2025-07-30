@@ -42,12 +42,6 @@ func NewHTTPServer(
 			noStrictAuthRouter.GET("/query", userHandler.GetProfile)
 			noStrictAuthRouter.GET("/batch-query", userHandler.GetProfile)
 		}
-
-		// Strict permission routing group
-		// strictAuthRouter := v1.Group("/").Use(md.StrictAuth(jwt, logger))
-		// {
-		// 	strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
-		// }
 	}
 
 	return s
