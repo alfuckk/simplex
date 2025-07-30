@@ -7,8 +7,9 @@
 package wire
 
 import (
+	"github.com/google/wire"
+	"github.com/spf13/viper"
 	"simplex/app/auth/internal/hdl"
-	"simplex/app/auth/internal/job"
 	"simplex/app/auth/internal/repo"
 	"simplex/app/auth/internal/srv"
 	"simplex/app/auth/internal/svc"
@@ -18,9 +19,6 @@ import (
 	"simplex/pkg/serv/http_serv"
 	"simplex/pkg/sid"
 	"simplex/repository"
-
-	"github.com/google/wire"
-	"github.com/spf13/viper"
 )
 
 // Injectors from wire.go:
@@ -37,10 +35,7 @@ func NewWire(viperViper *viper.Viper, logger *logx.Logger) (*app.App, func(), er
 	userService := svc.NewUserService(service, userRepository)
 	userHandler := hdl.NewUserHandler(handler, userService)
 	server := srv.NewHTTPServer(logger, viperViper, jwtJWT, userHandler)
-	jobJob := job.NewJob(transaction, logger, sidSid)
-	userJob := job.NewUserJob(jobJob, userRepository)
-	jobServer := srv.NewJobServer(logger, userJob)
-	appApp := newApp(server, jobServer)
+	appApp := newApp(server)
 	return appApp, func() {
 	}, nil
 }
@@ -53,15 +48,12 @@ var serviceSet = wire.NewSet(svc.NewService, svc.NewUserService)
 
 var handlerSet = wire.NewSet(hdl.NewHandler, hdl.NewUserHandler)
 
-var jobSet = wire.NewSet(job.NewJob, job.NewUserJob)
-
-var serverSet = wire.NewSet(srv.NewHTTPServer, srv.NewJobServer)
+var serverSet = wire.NewSet(srv.NewHTTPServer)
 
 // build App
 func newApp(
 	httpServer *http_serv.Server,
-	jobServer *srv.JobServer,
 
 ) *app.App {
-	return app.NewApp(app.WithServer(httpServer, jobServer), app.WithName("user-server"))
+	return app.NewApp(app.WithServer(httpServer), app.WithName("user-server"))
 }

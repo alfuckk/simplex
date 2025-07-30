@@ -5,7 +5,6 @@ package wire
 
 import (
 	"simplex/app/auth/internal/hdl"
-	"simplex/app/auth/internal/job"
 	"simplex/app/auth/internal/repo"
 	"simplex/app/auth/internal/srv"
 	"simplex/app/auth/internal/svc"
@@ -39,23 +38,17 @@ var handlerSet = wire.NewSet(
 	hdl.NewUserHandler,
 )
 
-var jobSet = wire.NewSet(
-	job.NewJob,
-	job.NewUserJob,
-)
 var serverSet = wire.NewSet(
 	srv.NewHTTPServer,
-	srv.NewJobServer,
 )
 
 // build App
 func newApp(
 	httpServer *http_serv.Server,
-	jobServer *srv.JobServer,
 	// task *server.Task,
 ) *app.App {
 	return app.NewApp(
-		app.WithServer(httpServer, jobServer),
+		app.WithServer(httpServer),
 		app.WithName("user-server"),
 	)
 }
@@ -65,7 +58,6 @@ func NewWire(*viper.Viper, *logx.Logger) (*app.App, func(), error) {
 		repositorySet,
 		serviceSet,
 		handlerSet,
-		jobSet,
 		serverSet,
 		sid.NewSid,
 		jwt.NewJwt,
