@@ -1,7 +1,6 @@
 package srv
 
 import (
-	apiV1 "simplex/app/user/api/v1"
 	"simplex/app/user/internal/hdl"
 	"simplex/app/user/internal/md"
 	"simplex/pkg/jwt"
@@ -34,25 +33,13 @@ func NewHTTPServer(
 		md.RequestLogMiddleware(logger),
 		//middleware.SignMiddleware(log),
 	)
-	s.GET("/", func(ctx *gin.Context) {
-		logger.WithContext(ctx).Info("hello")
-		apiV1.HandleSuccess(ctx, map[string]interface{}{
-			":)": "Thank you for using nunu!",
-		})
-	})
 
 	v1 := s.Group("/v1")
 	{
-		// No route group has permission
-		noAuthRouter := v1.Group("/")
-		{
-			noAuthRouter.POST("/register", userHandler.Register)
-			noAuthRouter.POST("/login", userHandler.Login)
-		}
 		// Non-strict permission routing group
-		noStrictAuthRouter := v1.Group("/").Use(md.NoStrictAuth(jwt, logger))
+		userRouter := v1.Group("/").Use(md.NoStrictAuth(jwt, logger))
 		{
-			noStrictAuthRouter.GET("/user", userHandler.GetProfile)
+			userRouter.GET("/user", userHandler.GetProfile)
 		}
 
 		// Strict permission routing group

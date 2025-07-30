@@ -1,7 +1,6 @@
 package srv
 
 import (
-	apiV1 "simplex/app/geoip/api/v1"
 	"simplex/app/geoip/internal/hdl"
 	"simplex/app/geoip/internal/md"
 	"simplex/pkg/jwt"
@@ -34,32 +33,21 @@ func NewHTTPServer(
 		md.RequestLogMiddleware(logger),
 		//middleware.SignMiddleware(log),
 	)
-	s.GET("/", func(ctx *gin.Context) {
-		logger.WithContext(ctx).Info("hello")
-		apiV1.HandleSuccess(ctx, map[string]interface{}{
-			":)": "Thank you for using nunu!",
-		})
-	})
 
 	v1 := s.Group("/v1")
 	{
-		// No route group has permission
-		noAuthRouter := v1.Group("/")
-		{
-			noAuthRouter.POST("/register", userHandler.Register)
-			noAuthRouter.POST("/login", userHandler.Login)
-		}
 		// Non-strict permission routing group
-		noStrictAuthRouter := v1.Group("/").Use(md.NoStrictAuth(jwt, logger))
+		noStrictAuthRouter := v1.Group("/geoip").Use(md.NoStrictAuth(jwt, logger))
 		{
-			noStrictAuthRouter.GET("/user", userHandler.GetProfile)
+			noStrictAuthRouter.GET("/query", userHandler.GetProfile)
+			noStrictAuthRouter.GET("/batch-query", userHandler.GetProfile)
 		}
 
 		// Strict permission routing group
-		strictAuthRouter := v1.Group("/").Use(md.StrictAuth(jwt, logger))
-		{
-			strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
-		}
+		// strictAuthRouter := v1.Group("/").Use(md.StrictAuth(jwt, logger))
+		// {
+		// 	strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
+		// }
 	}
 
 	return s
