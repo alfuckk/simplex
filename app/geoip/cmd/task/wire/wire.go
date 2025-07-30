@@ -26,7 +26,7 @@ var repositorySet = wire.NewSet(
 
 var taskSet = wire.NewSet(
 	task.NewTask,
-	task.NewUserTask,
+	task.NewGeoIPTask,
 )
 var serverSet = wire.NewSet(
 	srv.NewTaskServer,

@@ -26,9 +26,8 @@ func NewWire(viperViper *viper.Viper, logger *logx.Logger) (*app.App, func(), er
 	transaction := repository.NewTransaction(repositoryRepository)
 	sidSid := sid.NewSid()
 	taskTask := task.NewTask(transaction, logger, sidSid)
-	userRepository := repo.NewUserRepository(repositoryRepository)
-	userTask := task.NewUserTask(taskTask, userRepository)
-	taskServer := srv.NewTaskServer(logger, userTask)
+	geoIPTask := task.NewGeoIPTask(taskTask, viperViper)
+	taskServer := srv.NewTaskServer(logger, geoIPTask)
 	appApp := newApp(taskServer)
 	return appApp, func() {
 	}, nil
@@ -38,7 +37,7 @@ func NewWire(viperViper *viper.Viper, logger *logx.Logger) (*app.App, func(), er
 
 var repositorySet = wire.NewSet(repository.NewDB, repository.NewRepository, repository.NewTransaction, repo.NewUserRepository)
 
-var taskSet = wire.NewSet(task.NewTask, task.NewUserTask)
+var taskSet = wire.NewSet(task.NewTask, task.NewGeoIPTask)
 
 var serverSet = wire.NewSet(srv.NewTaskServer)
 

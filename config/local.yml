@@ -7,6 +7,7 @@ security:
     app_security: 123456
   jwt:
     key: 1234
+
 data:
   postgres:
     host: ep-yellow-smoke-a1yd0swt-pooler.ap-southeast-1.aws.neon.tech
@@ -15,13 +16,19 @@ data:
     dbname: neondb
     port: 5432
 
-    # host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai
   redis:
-    addr: 127.0.0.1:6350
+    addr: 127.0.0.1:6379
     password: ""
     db: 0
     read_timeout: 0.2s
     write_timeout: 0.2s
+
+geoip:
+  urls:
+    - https://raw.githubusercontent.com/alfuckk/GeoLite.mmdb/refs/heads/download/GeoLite2-ASN.mmdb
+    - https://raw.githubusercontent.com/alfuckk/GeoLite.mmdb/refs/heads/download/GeoLite2-City.mmdb
+    - https://raw.githubusercontent.com/alfuckk/GeoLite.mmdb/refs/heads/download/GeoLite2-Country.mmdb
+  data_path:  ./storage/mmdb
 
 log:
   log_level: debug

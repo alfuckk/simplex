@@ -13,16 +13,16 @@ import (
 type TaskServer struct {
 	log       *logx.Logger
 	scheduler *gocron.Scheduler
-	userTask  task.UserTask
+	geoipTask task.GeoIPTask
 }
 
 func NewTaskServer(
 	log *logx.Logger,
-	userTask task.UserTask,
+	geoipTask task.GeoIPTask,
 ) *TaskServer {
 	return &TaskServer{
-		log:      log,
-		userTask: userTask,
+		log:       log,
+		geoipTask: geoipTask,
 	}
 }
 func (t *TaskServer) Start(ctx context.Context) error {
@@ -36,12 +36,25 @@ func (t *TaskServer) Start(ctx context.Context) error {
 	// t.scheduler = gocron.NewScheduler(time.FixedZone("PRC", 8*60*60))
 
 	//_, err := t.scheduler.Every("3s").Do(func()
-	_, err := t.scheduler.CronWithSeconds("0/3 * * * * *").Do(func() {
-		err := t.userTask.CheckUser(ctx)
-		if err != nil {
-			t.log.Error("CheckUser error", zap.Error(err))
-		}
-	})
+	// _, err := t.scheduler.CronWithSeconds("0/3 * * * * *").Do(func() {
+	// 	err := t.userTask.CheckUser(ctx)
+	// 	if err != nil {
+	// 		t.log.Error("CheckUser error", zap.Error(err))
+	// 	}
+	// })
+	// if err != nil {
+	// 	t.log.Error("CheckUser error", zap.Error(err))
+	// }
+	err := t.geoipTask.DownloadToLocal(ctx)
+	if err != nil {
+		t.log.Error("CheckUser error", zap.Error(err))
+	}
+	// _, err := t.scheduler.CronWithSeconds("0/3 * * * * *").Do(func() {
+	// 	err := t.geoipTask.DownloadToLocal(ctx)
+	// 	if err != nil {
+	// 		t.log.Error("CheckUser error", zap.Error(err))
+	// 	}
+	// })
 	if err != nil {
 		t.log.Error("CheckUser error", zap.Error(err))
 	}
