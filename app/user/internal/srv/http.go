@@ -44,10 +44,10 @@ func NewHTTPServer(
 	v1 := s.Group("/v1")
 	{
 		// No route group has permission
-		noAuthRouter := v1.Group("/")
+		authRouter := v1.Group("/auth")
 		{
-			noAuthRouter.POST("/register", userHandler.Register)
-			noAuthRouter.POST("/login", userHandler.Login)
+			authRouter.POST("/register", userHandler.Register)
+			authRouter.POST("/login", userHandler.Login)
 		}
 	}
 
