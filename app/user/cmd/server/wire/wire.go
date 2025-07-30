@@ -11,8 +11,8 @@ import (
 	"simplex/app/user/internal/svc"
 	"simplex/pkg/app"
 	"simplex/pkg/jwt"
-	"simplex/pkg/log"
-	"simplex/pkg/server/http"
+	"simplex/pkg/logx"
+	"simplex/pkg/serv/http_serv"
 	"simplex/pkg/sid"
 	"simplex/repository"
 
@@ -50,7 +50,7 @@ var serverSet = wire.NewSet(
 
 // build App
 func newApp(
-	httpServer *http.Server,
+	httpServer *http_serv.Server,
 	jobServer *srv.JobServer,
 	// task *server.Task,
 ) *app.App {
@@ -60,7 +60,7 @@ func newApp(
 	)
 }
 
-func NewWire(*viper.Viper, *log.Logger) (*app.App, func(), error) {
+func NewWire(*viper.Viper, *logx.Logger) (*app.App, func(), error) {
 	panic(wire.Build(
 		repositorySet,
 		serviceSet,

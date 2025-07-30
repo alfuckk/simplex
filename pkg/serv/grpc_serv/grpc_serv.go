@@ -1,10 +1,10 @@
-package grpc
+package grpc_serv
 
 import (
 	"context"
 	"fmt"
 	"net"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"time"
 
 	"google.golang.org/grpc"
@@ -14,12 +14,12 @@ type Server struct {
 	*grpc.Server
 	host   string
 	port   int
-	logger *log.Logger
+	logger *logx.Logger
 }
 
 type Option func(s *Server)
 
-func NewServer(logger *log.Logger, opts ...Option) *Server {
+func NewServer(logger *logx.Logger, opts ...Option) *Server {
 	s := &Server{
 		Server: grpc.NewServer(),
 		logger: logger,

@@ -16,15 +16,15 @@ import (
 	"simplex/app/user/internal/svc"
 	"simplex/pkg/app"
 	"simplex/pkg/jwt"
-	"simplex/pkg/log"
-	"simplex/pkg/server/http"
+	"simplex/pkg/logx"
+	"simplex/pkg/serv/http_serv"
 	"simplex/pkg/sid"
 	"simplex/repository"
 )
 
 // Injectors from wire.go:
 
-func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), error) {
+func NewWire(viperViper *viper.Viper, logger *logx.Logger) (*app.App, func(), error) {
 	jwtJWT := jwt.NewJwt(viperViper)
 	handler := hdl.NewHandler(logger)
 	db := repository.NewDB(viperViper, logger)
@@ -58,9 +58,9 @@ var serverSet = wire.NewSet(srv.NewHTTPServer, srv.NewJobServer)
 
 // build App
 func newApp(
-	httpServer *http.Server,
+	httpServer *http_serv.Server,
 	jobServer *srv.JobServer,
 
 ) *app.App {
-	return app.NewApp(app.WithServer(httpServer, jobServer), app.WithName("demo-server"))
+	return app.NewApp(app.WithServer(httpServer, jobServer), app.WithName("user-server"))
 }

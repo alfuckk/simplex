@@ -3,7 +3,7 @@ package md
 import (
 	"net/http"
 	v1 "simplex/app/user/api/v1"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"sort"
 	"strings"
 
@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func SignMiddleware(logger *log.Logger, conf *viper.Viper) gin.HandlerFunc {
+func SignMiddleware(logger *logx.Logger, conf *viper.Viper) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		requiredHeaders := []string{"Timestamp", "Nonce", "Sign", "App-Version"}
 

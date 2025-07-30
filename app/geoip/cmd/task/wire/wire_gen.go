@@ -13,14 +13,14 @@ import (
 	"simplex/app/geoip/internal/srv"
 	"simplex/app/geoip/internal/task"
 	"simplex/pkg/app"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"simplex/pkg/sid"
 	"simplex/repository"
 )
 
 // Injectors from wire.go:
 
-func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), error) {
+func NewWire(viperViper *viper.Viper, logger *logx.Logger) (*app.App, func(), error) {
 	db := repository.NewDB(viperViper, logger)
 	repositoryRepository := repository.NewRepository(logger, db)
 	transaction := repository.NewTransaction(repositoryRepository)
@@ -45,5 +45,5 @@ var serverSet = wire.NewSet(srv.NewTaskServer)
 // build App
 func newApp(task2 *srv.TaskServer,
 ) *app.App {
-	return app.NewApp(app.WithServer(task2), app.WithName("demo-task"))
+	return app.NewApp(app.WithServer(task2), app.WithName("geoip-task"))
 }

@@ -4,13 +4,13 @@ import (
 	"net/http"
 	v1 "simplex/app/user/api/v1"
 	"simplex/pkg/jwt"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
-func StrictAuth(j *jwt.JWT, logger *log.Logger) gin.HandlerFunc {
+func StrictAuth(j *jwt.JWT, logger *logx.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenString := ctx.Request.Header.Get("Authorization")
 		if tokenString == "" {
@@ -40,7 +40,7 @@ func StrictAuth(j *jwt.JWT, logger *log.Logger) gin.HandlerFunc {
 	}
 }
 
-func NoStrictAuth(j *jwt.JWT, logger *log.Logger) gin.HandlerFunc {
+func NoStrictAuth(j *jwt.JWT, logger *logx.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		tokenString := ctx.Request.Header.Get("Authorization")
 		if tokenString == "" {
@@ -66,7 +66,7 @@ func NoStrictAuth(j *jwt.JWT, logger *log.Logger) gin.HandlerFunc {
 	}
 }
 
-func recoveryLoggerFunc(ctx *gin.Context, logger *log.Logger) {
+func recoveryLoggerFunc(ctx *gin.Context, logger *logx.Logger) {
 	if userInfo, ok := ctx.MustGet("claims").(*jwt.MyCustomClaims); ok {
 		logger.WithValue(ctx, zap.String("UserId", userInfo.UserId))
 	}

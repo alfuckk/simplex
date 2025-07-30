@@ -5,7 +5,7 @@ import (
 	"flag"
 	"simplex/app/user/cmd/migration/wire"
 	"simplex/pkg/config"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 
-	logger := log.NewLog(conf)
+	logger := logx.NewLog(conf)
 
 	app, cleanup, err := wire.NewWire(conf, logger)
 	defer cleanup()

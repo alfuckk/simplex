@@ -2,13 +2,13 @@ package svc
 
 import (
 	"simplex/pkg/jwt"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"simplex/pkg/sid"
 	"simplex/repository"
 )
 
 type Service struct {
-	logger *log.Logger
+	logger *logx.Logger
 	sid    *sid.Sid
 	jwt    *jwt.JWT
 	tm     repository.Transaction
@@ -16,7 +16,7 @@ type Service struct {
 
 func NewService(
 	tm repository.Transaction,
-	logger *log.Logger,
+	logger *logx.Logger,
 	sid *sid.Sid,
 	jwt *jwt.JWT,
 ) *Service {

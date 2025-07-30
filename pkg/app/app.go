@@ -5,13 +5,13 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"simplex/pkg/server"
+	"simplex/pkg/serv"
 	"syscall"
 )
 
 type App struct {
 	name    string
-	servers []server.Server
+	servers []serv.Server
 }
 
 type Option func(a *App)
@@ -24,7 +24,7 @@ func NewApp(opts ...Option) *App {
 	return a
 }
 
-func WithServer(servers ...server.Server) Option {
+func WithServer(servers ...serv.Server) Option {
 	return func(a *App) {
 		a.servers = servers
 	}
@@ -45,7 +45,7 @@ func (a *App) Run(ctx context.Context) error {
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
 	for _, srv := range a.servers {
-		go func(srv server.Server) {
+		go func(srv serv.Server) {
 			err := srv.Start(ctx)
 			if err != nil {
 				log.Printf("Server start err: %v", err)

@@ -3,7 +3,7 @@ package srv
 import (
 	"context"
 	"simplex/app/geoip/internal/task"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -11,13 +11,13 @@ import (
 )
 
 type TaskServer struct {
-	log       *log.Logger
+	log       *logx.Logger
 	scheduler *gocron.Scheduler
 	userTask  task.UserTask
 }
 
 func NewTaskServer(
-	log *log.Logger,
+	log *logx.Logger,
 	userTask task.UserTask,
 ) *TaskServer {
 	return &TaskServer{

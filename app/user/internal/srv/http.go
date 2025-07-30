@@ -5,27 +5,27 @@ import (
 	"simplex/app/user/internal/hdl"
 	"simplex/app/user/internal/md"
 	"simplex/pkg/jwt"
-	"simplex/pkg/log"
-	"simplex/pkg/server/http"
+	"simplex/pkg/logx"
+	"simplex/pkg/serv/http_serv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
 func NewHTTPServer(
-	logger *log.Logger,
+	logger *logx.Logger,
 	conf *viper.Viper,
 	jwt *jwt.JWT,
 	userHandler *hdl.UserHandler,
-) *http.Server {
+) *http_serv.Server {
 	if conf.GetString("env") == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	s := http.NewServer(
+	s := http_serv.NewServer(
 		gin.Default(),
 		logger,
-		http.WithServerHost(conf.GetString("http.host")),
-		http.WithServerPort(conf.GetInt("http.port")),
+		http_serv.WithServerHost(conf.GetString("http.host")),
+		http_serv.WithServerPort(conf.GetInt("http.port")),
 	)
 
 	s.Use(

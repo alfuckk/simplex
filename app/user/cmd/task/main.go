@@ -5,7 +5,7 @@ import (
 	"flag"
 	"simplex/app/user/cmd/task/wire"
 	"simplex/pkg/config"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 
-	logger := log.NewLog(conf)
+	logger := logx.NewLog(conf)
 	logger.Info("start task")
 	app, cleanup, err := wire.NewWire(conf, logger)
 	defer cleanup()

@@ -12,13 +12,13 @@ import (
 	"simplex/app/geoip/internal/repo"
 	"simplex/app/geoip/internal/srv"
 	"simplex/pkg/app"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"simplex/repository"
 )
 
 // Injectors from wire.go:
 
-func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), error) {
+func NewWire(viperViper *viper.Viper, logger *logx.Logger) (*app.App, func(), error) {
 	db := repository.NewDB(viperViper, logger)
 	migrateServer := srv.NewMigrateServer(db, logger)
 	appApp := newApp(migrateServer)
@@ -36,5 +36,5 @@ var serverSet = wire.NewSet(srv.NewMigrateServer)
 func newApp(
 	migrateServer *srv.MigrateServer,
 ) *app.App {
-	return app.NewApp(app.WithServer(migrateServer), app.WithName("demo-migrate"))
+	return app.NewApp(app.WithServer(migrateServer), app.WithName("geoip-migrate"))
 }

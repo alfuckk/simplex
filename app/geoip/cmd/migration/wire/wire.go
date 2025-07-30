@@ -7,7 +7,7 @@ import (
 	"simplex/app/geoip/internal/repo"
 	"simplex/app/geoip/internal/srv"
 	"simplex/pkg/app"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"simplex/repository"
 
 	"github.com/google/wire"
@@ -34,7 +34,7 @@ func newApp(
 	)
 }
 
-func NewWire(*viper.Viper, *log.Logger) (*app.App, func(), error) {
+func NewWire(*viper.Viper, *logx.Logger) (*app.App, func(), error) {
 	panic(wire.Build(
 		repositorySet,
 		serverSet,

@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 	"simplex/app/geoip/internal/model"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -12,10 +12,10 @@ import (
 
 type MigrateServer struct {
 	db  *gorm.DB
-	log *log.Logger
+	log *logx.Logger
 }
 
-func NewMigrateServer(db *gorm.DB, log *log.Logger) *MigrateServer {
+func NewMigrateServer(db *gorm.DB, log *logx.Logger) *MigrateServer {
 	return &MigrateServer{
 		db:  db,
 		log: log,

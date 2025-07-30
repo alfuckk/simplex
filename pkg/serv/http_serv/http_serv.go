@@ -1,11 +1,11 @@
-package http
+package http_serv
 
 import (
 	"context"
 	"errors"
 	"fmt"
 	"net/http"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,11 +16,11 @@ type Server struct {
 	httpSrv *http.Server
 	host    string
 	port    int
-	logger  *log.Logger
+	logger  *logx.Logger
 }
 type Option func(s *Server)
 
-func NewServer(engine *gin.Engine, logger *log.Logger, opts ...Option) *Server {
+func NewServer(engine *gin.Engine, logger *logx.Logger, opts ...Option) *Server {
 	s := &Server{
 		Engine: engine,
 		logger: logger,

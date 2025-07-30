@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"simplex/pkg/zapgorm2"
 	"time"
 
@@ -22,11 +22,11 @@ type Repository struct {
 	db *gorm.DB
 	//rdb    *redis.Client
 	//mongo  *mongo.Client
-	logger *log.Logger
+	logger *logx.Logger
 }
 
 func NewRepository(
-	logger *log.Logger,
+	logger *logx.Logger,
 	db *gorm.DB,
 	// rdb *redis.Client,
 	//
@@ -67,7 +67,7 @@ func (r *Repository) Transaction(ctx context.Context, fn func(ctx context.Contex
 	})
 }
 
-func NewDB(conf *viper.Viper, l *log.Logger) *gorm.DB {
+func NewDB(conf *viper.Viper, l *logx.Logger) *gorm.DB {
 	var (
 		db  *gorm.DB
 		err error

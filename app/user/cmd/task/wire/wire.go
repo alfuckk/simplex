@@ -8,7 +8,7 @@ import (
 	"simplex/app/user/internal/srv"
 	"simplex/app/user/internal/task"
 	"simplex/pkg/app"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"simplex/pkg/sid"
 	"simplex/repository"
 
@@ -42,7 +42,7 @@ func newApp(
 	)
 }
 
-func NewWire(*viper.Viper, *log.Logger) (*app.App, func(), error) {
+func NewWire(*viper.Viper, *logx.Logger) (*app.App, func(), error) {
 	panic(wire.Build(
 		repositorySet,
 		taskSet,

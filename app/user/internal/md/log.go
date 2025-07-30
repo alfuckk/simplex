@@ -3,7 +3,7 @@ package md
 import (
 	"bytes"
 	"io"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 	"time"
 
 	"github.com/duke-git/lancet/v2/cryptor"
@@ -12,7 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func RequestLogMiddleware(logger *log.Logger) gin.HandlerFunc {
+func RequestLogMiddleware(logger *logx.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// The configuration is initialized once per request
 		uuid, err := random.UUIdV4()
@@ -33,7 +33,7 @@ func RequestLogMiddleware(logger *log.Logger) gin.HandlerFunc {
 		ctx.Next()
 	}
 }
-func ResponseLogMiddleware(logger *log.Logger) gin.HandlerFunc {
+func ResponseLogMiddleware(logger *logx.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
 		ctx.Writer = blw

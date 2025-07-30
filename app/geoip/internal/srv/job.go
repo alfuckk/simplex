@@ -3,16 +3,16 @@ package srv
 import (
 	"context"
 	"simplex/app/geoip/internal/job"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 )
 
 type JobServer struct {
-	log     *log.Logger
+	log     *logx.Logger
 	userJob job.UserJob
 }
 
 func NewJobServer(
-	log *log.Logger,
+	log *logx.Logger,
 	userJob job.UserJob,
 ) *JobServer {
 	return &JobServer{

@@ -2,17 +2,17 @@ package hdl
 
 import (
 	"simplex/pkg/jwt"
-	"simplex/pkg/log"
+	"simplex/pkg/logx"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	logger *log.Logger
+	logger *logx.Logger
 }
 
 func NewHandler(
-	logger *log.Logger,
+	logger *logx.Logger,
 ) *Handler {
 	return &Handler{
 		logger: logger,
